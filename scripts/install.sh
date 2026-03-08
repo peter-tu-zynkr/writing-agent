@@ -1,34 +1,89 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+# ── Config ────────────────────────────────────────────────────────────────────
+REPO="peter-tu-zynkr/writing-agent"
+BRANCH="main"
+BASE_URL="https://raw.githubusercontent.com/${REPO}/${BRANCH}"
 TARGET_DIR="${1:-$PWD}"
-CLAUDE_DIR="${TARGET_DIR}/.claude"
-AGENTS_DIR="${CLAUDE_DIR}/agents"
-SKILLS_DIR="${CLAUDE_DIR}/skills"
-TARGET_SKILL_DIR="${SKILLS_DIR}/write-article"
-TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+SKILL_NAME="write-article"
+SKILL_DIR="${TARGET_DIR}/.claude/skills/${SKILL_NAME}"
+AGENTS_DIR="${TARGET_DIR}/.claude/agents"
 
-mkdir -p "${AGENTS_DIR}" "${SKILLS_DIR}"
+# ── Helpers ───────────────────────────────────────────────────────────────────
+download() {
+  local src="$1"
+  local dest="$2"
+  mkdir -p "$(dirname "$dest")"
+  curl -fsSL "${BASE_URL}/${src}" -o "$dest"
+  echo "  ✓ ${dest}"
+}
 
-if [ -e "${TARGET_SKILL_DIR}" ]; then
-  BACKUP_DIR="${TARGET_SKILL_DIR}.backup-${TIMESTAMP}"
-  mv "${TARGET_SKILL_DIR}" "${BACKUP_DIR}"
-  echo "Backed up existing skill to: ${BACKUP_DIR}"
+# ── Backup existing ───────────────────────────────────────────────────────────
+if [ -d "${SKILL_DIR}" ]; then
+  TIMESTAMP=$(date +%Y%m%d%H%M%S)
+  BACKUP="${SKILL_DIR}.backup-${TIMESTAMP}"
+  echo "⚠️  Backing up existing skill → ${BACKUP}"
+  mv "${SKILL_DIR}" "${BACKUP}"
 fi
 
-cp -R "${REPO_ROOT}/.claude/skills/write-article" "${TARGET_SKILL_DIR}"
+echo ""
+echo "⚡ Installing ${SKILL_NAME} into ${TARGET_DIR}"
+echo ""
 
-for agent_file in "${REPO_ROOT}"/.claude/agents/*.md; do
-  cp "${agent_file}" "${AGENTS_DIR}/"
+# ── Skill SKILL.md ────────────────────────────────────────────────────────────
+download \
+  ".claude/skills/${SKILL_NAME}/SKILL.md" \
+  "${SKILL_DIR}/SKILL.md"
+
+# ── References ────────────────────────────────────────────────────────────────
+REFS=(
+  "stage-0-socratic.md"
+  "stage-1-article-structure.md"
+  "stage-1-style-selection.md"
+  "stage-2-article-draft.md"
+  "stage-2-style-guide.md"
+  "stage-3-5-reader-perspective.md"
+  "stage-3-editor-guide.md"
+  "stage-3-editor.md"
+  "stage-4-article-title.md"
+  "stage-4-seo-list.md"
+  "stage-5-cta-selection.md"
+  "stage-5-cta-writing.md"
+)
+
+for ref in "${REFS[@]}"; do
+  download \
+    ".claude/skills/${SKILL_NAME}/references/${ref}" \
+    "${SKILL_DIR}/references/${ref}"
 done
 
-echo "Installed write-article skill into: ${TARGET_DIR}"
-echo "Installed 7 supporting agents into: ${AGENTS_DIR}"
-echo
+# ── Agents ────────────────────────────────────────────────────────────────────
+AGENTS=(
+  "article-drafter.md"
+  "article-editor.md"
+  "article-style-selector.md"
+  "article-title-suggester.md"
+  "cta-writer.md"
+  "reader-perspective.md"
+  "socratic-ideation-partner.md"
+)
+
+for agent in "${AGENTS[@]}"; do
+  download \
+    ".claude/agents/${agent}" \
+    "${AGENTS_DIR}/${agent}"
+done
+
+# ── Done ──────────────────────────────────────────────────────────────────────
+echo ""
+echo "✅ Done! Installed to ${TARGET_DIR}"
+echo ""
+echo "   Skill  → ${SKILL_DIR}"
+echo "   Agents → ${AGENTS_DIR}"
+echo ""
 echo "Next steps:"
-echo "1. cd \"${TARGET_DIR}\""
-echo "2. claude"
-echo "3. run /write-article"
+echo "   1.  cd ${TARGET_DIR}"
+echo "   2.  claude"
+echo "   3.  /write-article"
+echo ""
