@@ -33,12 +33,17 @@ Stage 5: cta-writer                 — 3 CTA options from 6 predefined types
 |------|------|
 | Orchestrator | `.claude/skills/write-article/SKILL.md` |
 | Agent definitions | `.claude/agents/*.md` (7 files) |
-| Guide/reference docs | `[A-G1]*.md` at repo root (12 files, ~47 KB) |
+| Guide/reference docs | `.claude/skills/write-article/references/*.md` (12 files) |
 | Eval outputs | `write-article-workspace/eval-{0,1,2}/` |
 
-Guide files are numbered reference material that map to stages:
-- `[A]` → Stage 0, `[B]/[B1]` → Stage 1, `[C]/[C1]` → Stage 2
-- `[D]/[D1]` → Stage 3, `[E]` → Stage 3.5, `[F]/[F1]` → Stage 4, `[G]/[G1]` → Stage 5
+Guide files are stage-specific reference material that map to the pipeline:
+- `stage-0-socratic.md` → Stage 0
+- `stage-1-style-selection.md`, `stage-1-article-structure.md` → Stage 1
+- `stage-2-article-draft.md`, `stage-2-style-guide.md` → Stage 2
+- `stage-3-editor.md`, `stage-3-editor-guide.md` → Stage 3
+- `stage-3-5-reader-perspective.md` → Stage 3.5
+- `stage-4-article-title.md`, `stage-4-seo-list.md` → Stage 4
+- `stage-5-cta-writing.md`, `stage-5-cta-selection.md` → Stage 5
 
 ## Running
 

@@ -100,6 +100,49 @@ Claude will automatically route to the `article-editor` agent, as long as the `.
 ## Project Structure
 
 ```
+.
+.claude/
+├── agents/
+│   ├── socratic-ideation-partner.md
+│   ├── article-style-selector.md
+│   ├── article-drafter.md
+│   ├── article-editor.md
+│   ├── reader-perspective.md
+│   ├── article-title-suggester.md
+│   └── cta-writer.md
+└── skills/
+    └── write-article/
+        ├── SKILL.md
+        └── references/
+            ├── stage-0-socratic.md
+            ├── stage-1-style-selection.md
+            ├── stage-1-article-structure.md
+            ├── stage-2-article-draft.md
+            ├── stage-2-style-guide.md
+            ├── stage-3-editor.md
+            ├── stage-3-editor-guide.md
+            ├── stage-3-5-reader-perspective.md
+            ├── stage-4-article-title.md
+            ├── stage-4-seo-list.md
+            ├── stage-5-cta-writing.md
+            └── stage-5-cta-selection.md
+scripts/
+└── install.sh
+```
+
+## Runtime Layout
+
+The only files Claude Code needs at runtime are under `.claude/`.
+
+- `.claude/agents/` contains the 7 subagents
+- `.claude/skills/write-article/` contains the orchestrator skill
+- `.claude/skills/write-article/references/` contains the stage-specific reference material used to maintain consistency across the pipeline
+
+The repo root is intentionally kept small so install instructions and entry points are easy to scan.
+
+## Claude Asset Layout
+
+```text
 .claude/
 ├── agents/
 │   ├── socratic-ideation-partner.md   # Stage 0 — Ideation
