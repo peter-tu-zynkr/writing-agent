@@ -2,6 +2,47 @@
 
 A modular article writing pipeline built on [Claude Code](https://claude.ai/claude-code), designed for Zynkr's content team. Seven specialized agents handle each stage of the writing process — from ideation to CTA — orchestrated by a single `/write-article` command.
 
+## Install
+
+### Option 1: Install into your current Claude workspace
+
+If you already have a project open in Claude Code and want to add this writing pipeline into that workspace, run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/peter-tu-zynkr/writing-agent/main/scripts/install.sh | bash
+```
+
+This installs:
+
+- `.claude/skills/write-article/`
+- all 7 supporting files in `.claude/agents/`
+
+If you want to install into a different workspace path:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/peter-tu-zynkr/writing-agent/main/scripts/install.sh | bash -s -- "/path/to/your/project"
+```
+
+### Option 2: Manual install
+
+Copy the Claude assets into your target workspace:
+
+```bash
+mkdir -p "/path/to/your/project/.claude/agents" "/path/to/your/project/.claude/skills"
+cp .claude/agents/*.md "/path/to/your/project/.claude/agents/"
+cp -R .claude/skills/write-article "/path/to/your/project/.claude/skills/write-article"
+```
+
+### Option 3: Run it directly from this repo
+
+If you prefer to use the repo as-is, clone it and open Claude Code in the repo root:
+
+```bash
+git clone https://github.com/peter-tu-zynkr/writing-agent.git
+cd writing-agent
+claude
+```
+
 ## Pipeline Overview
 
 ```
@@ -27,10 +68,10 @@ A modular article writing pipeline built on [Claude Code](https://claude.ai/clau
 
 ### Usage
 
-Open the project directory in Claude Code:
+Open the workspace that contains the installed skill in Claude Code:
 
 ```bash
-cd "Writing agent"
+cd /path/to/your/project
 claude
 ```
 
@@ -54,7 +95,7 @@ Each agent can also be invoked independently via the Task tool. For example, if 
 Help me edit this article: [paste your draft]
 ```
 
-Claude will automatically route to the `article-editor` agent.
+Claude will automatically route to the `article-editor` agent, as long as the `.claude/agents` files from this repo are installed in the current workspace.
 
 ## Project Structure
 
