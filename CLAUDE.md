@@ -1,3 +1,15 @@
+---
+name: "Writing Agent"
+category: "brand-marketing"
+project: "writing-agent"
+platform: "claude"
+status: "Done"
+author: "Peter Tu"
+input: "Article topic or idea — can be vague, an outline, a draft, or completed copy at any stage"
+process: "7-stage pipeline orchestrated by /write-article — ideation, style selection, drafting, editing, reader perspective scoring, title generation, CTA writing"
+output: "Publication-ready article with SEO-optimized title and CTA, produced incrementally stage by stage"
+synergy: []
+---
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
