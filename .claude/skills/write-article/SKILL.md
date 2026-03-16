@@ -47,6 +47,9 @@ If the user provides a specific argument (e.g., `/write-article 我想寫一篇�
 3. **Pass the full output** from the previous agent as input to the next agent via the Task tool prompt. Each agent needs the complete context from the prior stage.
 4. **Stages 4 and 5 (titles + CTA) can run in either order.** When reaching this point, ask the user: "Would you like to generate SEO titles or CTA options first? Or both?"
 5. **Reader perspective (Stage 3.5) is optional.** After editing is complete, mention it's available: "If you'd like a critical reader's perspective with scoring before moving to titles/CTA, I can run that too." Don't force it.
+6. **After the final stage the user completes** (titles, CTA, or editing — whichever is last), ask:
+   "文章完成了！要存到哪個資料夾？（例如 `articles/newsletter/`、`articles/career/`）"
+   Then use the Write tool to save the article as a `.md` file using the chosen title as filename.
 
 ---
 
@@ -82,6 +85,7 @@ Legend:
 
 Omit Stage 0 (Ideation) from the progress line if the user entered at Stage 1 or later.
 Omit Stage 3.5 (Reader Perspective) unless the user opts into it.
+After the final completed stage, always prompt for save location before ending the session.
 
 ---
 
